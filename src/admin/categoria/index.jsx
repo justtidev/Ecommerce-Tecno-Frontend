@@ -11,7 +11,7 @@ function CategoriaIndex() {
     const [filtro, setFiltro] = useState('');
 
     const elementosPorPagina = 10;
-    
+
     useEffect(() => {
 
         // se ejecuta al cargar el componente
@@ -38,7 +38,7 @@ function CategoriaIndex() {
         });
     }
 
- 
+
 
     const borrarElementoDB = (id) => {
         axios.delete('/categoria/' + id).then((respuesta) => {
@@ -78,60 +78,52 @@ function CategoriaIndex() {
     return (
 
         <div>
-
-            <div className='flex justify-between m-5'>
-
-                <div className=' text-xl font-medium '>
-                    Gestion de Categorias
-                </div>
-
-                {loading && <div className='p-2 mt-10 text-center text-white bg-green-500'>Cargando ...</div>}
-
-                <div className='flex justify-center w-full mt-10'>
-                    <div className='w-1/4'>
-
-                        <input
-                            type='text'
-                            className='w-full p-2 mb-4 border border-gray-400 rounded'
-                            placeholder='Buscar por descripcion'
-                            value={filtro}
-                            onChange={(e) => setFiltro(e.target.value)}
-                        /></div>
-
-                </div>
-
-                <div>
-                    <Link to="/admin/categoria/nuevo">
-                        <button className='p-2 bg-green-500 rounded-md hover:bg-green-700 hover:text-white '>NUEVA CATEGORIA</button>
-                    </Link> </div>
+            <div className="p-6 text-2xl font-bold text-center text-white bg-green-900">
+                Gestion de Categorias
             </div>
 
+            {loading && <div className="flex justify-center w-full mt-10">Cargando ...</div>}
+
+
+            <div className='w-1/4'>
+                <input
+                    type='text'
+                    className='w-full m-3 p-2 mb-4 border border-gray-400 rounded'
+                    placeholder='Buscar por nombre'
+                    value={filtro}
+                    onChange={(e) => setFiltro(e.target.value)}
+                /></div>
 
 
 
-            <div>
-                <table className='w-full border border-collapse border-gray-400 table-auto m-4 '>
-                    <thead className=' bg-black'>
-                        <tr className='font-thin  text-slate-200 m-4'>
-                            <th className='p-3'>ID</th>
-                            <th className='p-3'>Ubicacion</th>
-                            <th className='p-3'>Acciones</th>
+            <div className="ml-5">
+                <button className="px-4 m-3 py-2 font-bold text-white bg-green-600 rounded hover:bg-green-800"
+                    onClick={() => navigate("/admin/categoria/nuevo")}>Crear Categoria
+                </button>
+            </div>
+
+            <div className="m-5">
+                <table className='w-full border border-collapse  table-auto shadow-lg  '>
+                    <thead className='text-gray-300 bg-black'>
+                        <tr >
+                            <th className="px-4 py-2 border-2 border-gray-400 text-center">ID</th>
+                            <th className="px-4 py-2 border-2 border-gray-400 text-center">Nombre</th>
+                            <th className="px-4 py-2 border-2 border-gray-400 text-center">Acciones</th>
 
 
                         </tr>
 
                     </thead>
-                    <tbody className='bg-slate-200 p-3'>
+                    <tbody className=''>
                         {filtrarElementosSegunPagina().filter((categoria) =>
-                            categoria.descripcion.toLowerCase().includes(filtro.toLowerCase())).map((categoria) =>
+                            categoria.nombre.toLowerCase().includes(filtro.toLowerCase())).map((categoria) =>
                                 <tr key={categoria.id}>
-                                    <td className='p-3'>{categoria.id}</td>
-                                    <td className='p-3'>{categoria.descripcion}</td>
+                                    <td className=" px-4 py-2 border border-gray-200 text-center hover:bg-gray-100">{categoria.id}</td>
+                                    <td className=" px-4 py-2 border border-gray-200 text-center hover:bg-gray-100">{categoria.nombre}</td>
 
-                                    {/* <td>{libro.disponible ? <div className='text-green-500'>SI</siv> : <div className='text-red-500' >NO</div>}</td>*/}
-                                    <td className='grid-col-1 md:grid-cols-2 m-2 gap-3'>
+                                    <td className="flex justify-center space-x-2 bg-white border-b p-2 ">
                                         <div>
-                                            <button className='p-1 text-white bg-slate-500 rounded-md hover:bg-slate-800' onClick={() => navigate("/admin/categoria/" + categoria.id)}>EDITAR</button> </div>
+                                            <button className='p-1 text-white bg-green-600 rounded-md hover:bg-slate-800' onClick={() => navigate("/admin/categoria/" + categoria.id)}>EDITAR</button> </div>
                                         <div>
                                             <button className='p-1 text-white bg-red-500 rounded-md hover:bg-red-800' onClick={() => borrarElemento(categoria.id)}>
                                                 BORRAR</button> </div></td>
@@ -144,33 +136,33 @@ function CategoriaIndex() {
 
             </div>
 
-        <div>
-        <div className='flex justify-center mt-5'>
-        {filtrarElementosSegunPagina().filter((categoria) =>
-          categoria.descripcion.toLowerCase().includes(filtro.toLowerCase())
-        ).length === 0 ? (
-          <tr>
-            <td colSpan={5} className='px-4 py-2 text-center border border-gray-400'>
-              No se encontraron categorias que coincidan con su búsqueda.
-            </td>
-          </tr>
-        ) :
-          <div  >
-            {Array.from({ length: calcularCantidadPaginas() }, (_, i) => (
-              <button
-                key={i + 1}
-                className={`mx-2 py-2 px-4 rounded ${paginaActual === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'
-                  }`}
-                onClick={() => cambiarPagina(i + 1)}
-              >
-                {i + 1}
-              </button>
-            ))}
-          </div>
-        }
-      </div>
-    </div>
-  </div>
+            <div>
+                <div className='flex justify-center mt-5'>
+                    {filtrarElementosSegunPagina().filter((categoria) =>
+                        categoria.nombre.toLowerCase().includes(filtro.toLowerCase())
+                    ).length === 0 ? (
+                        <tr>
+                            <td colSpan={5} className='px-4 py-2 text-center border border-gray-400'>
+                                No se encontraron categorias que coincidan con su búsqueda.
+                            </td>
+                        </tr>
+                    ) :
+                        <div  >
+                            {Array.from({ length: calcularCantidadPaginas() }, (_, i) => (
+                                <button
+                                    key={i + 1}
+                                    className={`mx-2 py-2 px-4 rounded ${paginaActual === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'
+                                        }`}
+                                    onClick={() => cambiarPagina(i + 1)}
+                                >
+                                    {i + 1}
+                                </button>
+                            ))}
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
     )
 }
 

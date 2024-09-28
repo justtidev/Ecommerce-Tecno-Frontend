@@ -17,15 +17,17 @@ import CategoriaIndex from './admin/categoria/index.jsx';
 import FormularioCategoria from './admin/categoria/formulario.jsx';
 import ProductoIndex from './admin/producto/index.jsx';
 import FormularioProducto from './admin/producto/formulario.jsx';
+import UsuarioIndex from './admin/usuario/index.jsx';
+import FormularioUsuario from './admin/usuario/formulario.jsx';
 
 import './index.css'
 
 axios.defaults.baseURL = 'http://localhost:3000';
 //axios.defaults.baseURL = 'https://libros-arg.com';
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+/*axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS';
 axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Content-Type, Authorization';
-axios.defaults.headers.common['Content-Type'] = 'application/json'; 
+axios.defaults.headers.common['Content-Type'] = 'application/json'; */
 
 
 const router = createBrowserRouter([
@@ -65,6 +67,18 @@ const router = createBrowserRouter([
         path: "imagen/:id",
         element: <FormularioImagen />,
       },
+      {
+        path: "usuario",
+        element: <UsuarioIndex />,
+      },
+      {
+        path: "usuario/:id",
+        element: <FormularioUsuario />,
+      },
+      {
+        path: "imagen/prod/:id",
+        element: <FormularioImagen />,
+      },     
     ],
   },
     

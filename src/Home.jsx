@@ -3,12 +3,14 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Listado from './Listado.jsx';
 
-import './Home.css'
+import './Home.css';
+
 
 function Home() {
 
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+
 
   useEffect(() => {
         
@@ -16,7 +18,7 @@ function Home() {
    
    //axios.defaults.baseURL = 'http://localhost:3000';
 
-    axios.get('http://www.localhost:3000/usuario').then((respuesta) => {
+    axios.get('http://www.localhost:3000/producto').then((respuesta) => {
       console.log("***",respuesta)
 
       setLoading(false);
@@ -28,8 +30,8 @@ function Home() {
       }
 
     });
-
-  }, [])
+},[])
+   
 
   return (
     <>
@@ -40,7 +42,11 @@ function Home() {
       {(loading == true) ?
         <div>Cargando...</div> 
         :
-        <div> <Listado usuarios={data} /> </div>
+        <div>
+        
+          <Listado productos={data}  />
+         </div>
+       
       }
 
     </>

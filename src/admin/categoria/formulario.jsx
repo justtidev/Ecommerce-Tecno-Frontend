@@ -5,32 +5,24 @@ import axios from "axios";
 function FormularioCategoria() {
 
     const { id } = useParams();
-/*     const { nroDeOrden } = useParams();
-    const { ProductoId } = useParams(); */
     const navigate = useNavigate();
-
-    const [descripcion, setDescripcion] = useState('');
-    const[data,setData]=useState({});
-  
-//Trae la data de la BD del objeto mediante metodo put, llamado por axios
-const cargarCategoria = (id) => {
-    axios.get('/categoria/' + id).then((respuesta) => {
-        console.log("***", respuesta)
-
-        // setLoading(false);
-        if (respuesta.status === 200) {
-            console.log("respuesta correcta", respuesta.data.data)
-            setDescripcion(respuesta.data.data.descripcion);
-           
-            setData(respuesta.data.data)
-        } else {
-            console.log("error")
-        }
-
-    }).catch((error) => {
-        console.log("error", error)
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [categoria, setCategoria] = useState({
+        nombre: '',
     });
-}
+
+    const fetchCategoria = async () => {
+        try {
+            setLoading(true);
+            const respuesta = await axios.get('/categoria/' + id);
+            setCategoria(respuesta.data.data);
+            setLoading(false);
+        } catch (error) {
+            setError(error.message);
+            setLoading(false);
+        }
+    };
 
 
     useEffect(() => {
@@ -39,115 +31,85 @@ const cargarCategoria = (id) => {
 
         if (id === "nuevo") {
 
-            setDescripcion('');
-       
+            setCategoria({
+                nombre:'',
+            });
+
+        }
+         else {
+            fetchCategoria(id)
         }
 
-else{
-        cargarCategoria(id)
+    }, [id])
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setCategoria({ ...categoria, [name]: value });
     }
-    
-}, [id]) 
 
-const guardarCategoria = (objetoCategoria) => {
-    axios.post('/categoria/', objetoCategoria).then((respuesta) => {
-        console.log("*", respuesta)
+    const handleSubmit = async (event) => {
+        event.preventDefault();
 
-        // setLoading(false);
-        if (respuesta.status === 201) {
-            console.log("respuesta correcta", respuesta.data.data)
-            navigate("/admin/categoria");
-            setData(respuesta.data.data)
-        } else {
-            console.log("error")
+        try {
+            if (id === 'nuevo') {
+                const respuesta = await axios.post('/categoria', categoria);
+                console.log(respuesta.data);
+                navigate('/admin/categoria');
+            } else {
+                const respuesta = await axios.put('/categoria/' + id, categoria);
+                console.log(respuesta.data);
+                navigate('/admin/categoria');
+            }
+        } catch (error) {
+            setError(error.message);
         }
+    };
 
-    }).catch((error) => {
-        console.log("error", error)
-    });
-}
-//Funcion que mediante axios llama a la base de datos y con el metodo put modifica el objeto seleccionado por el id
-const actualizarCategoria = (objetoCategoria, id) => {
-    axios.put('/categoria/' + id, objetoCategoria).then((respuesta) => {
-        console.log("***", respuesta)
-
-        // setLoading(false);
-        if (respuesta.status === 200) {
-            console.log("respuesta correcta", respuesta.data.data)
-            navigate("/admin/categoria");
-            setData(respuesta.data.data)
-        } else {
-            console.log("error")
-        }
-
-    }).catch((error) => {
-        console.log("error", error)
-    });
-}
-
-    const guardar = () => {
-
-        const objData = {
-
-            descripcion: descripcion,
-           
-            
-
-        }
-
-
-        console.log("objData " + objData)
-        
-
-        if (id === "nuevo") {
-            // llamda con axios a la ruta del post
-            console.log("es nuevo")
-            guardarCategoria(objData)
-              
-                }
-     
-                else {
-                    console.log("es editar")
-                    actualizarCategoria(objData, id)
-                }
-
-        
-
-
-    }
 
     return (
         <div>
-
-            <div> Formulario de gestión de categoria</div>
-
-            <div className="grid m-10 ">
-                <div className="flex m-4 "> 
-                    <div className="mt-4 mr-3">Descripcion</div>
-                    <div>
-                        <input value={descripcion}
-                            onChange={(e) => setDescripcion(e.target.value)}
-                            type="text"
-                            placeholder="completar con la descricion de la categoria"
-                            className="w-96 p-3 text-black bg-gray-200 rounded-md " />
-
-                    </div>
-                
-               
-                       
-                    </div>
-                </div>
-                <div><button className="m-10 p-3 bg-black text-white rounded-lg " onClick={() => guardar()}>GUARDAR</button></div>
-                <button
-                className="px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700 focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={() => navigate('/admin/categoria')}
-              >
-                Cancelar
-              </button>
+            <div className='p-6 text-2xl font-bold text-center text-white bg-slate-600 '>
+                {categoria.id ? "Editar categoria" : "Crear nueva categoria"}
             </div>
+            {loading ? (
+                <p>Cargando...</p>
+            ) : (
+                <div className="max-w-md p5 mx-auto mt-10 rounded-lg shadow-md">
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-4 ">
+                            <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="nombre">Nombre</label>
+                        </div>
+                        <input
+                            id="nombre"
+                            type="text"
+                            name="nombre"
+                            value={categoria.nombre}
+                            onChange={handleChange}
+
+                            className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" />
+
+
+
+                        <div className="flex justify-center bflex space-x-2">
+                            <button className="px-4 py-2 bg-slate-600 rounded hover:bg-slate-900 text-white flex items-center justify-center" type="submit" >Guardar</button>
+                            <button
+                                className="px-4 py-2  text-white bg-red-500 rounded hover:bg-red-800 "
+                                type="button"
+                                onClick={() => navigate('/admin/categoria')}
+                            >
+                                Cancelar
+                            </button>
+                        </div>
+                    </form >
+                </div>
             )
+            }
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+        </div >
+
+    );
 
 }
 
-            export default FormularioCategoria;
+
+export default FormularioCategoria;

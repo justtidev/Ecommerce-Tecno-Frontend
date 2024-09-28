@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import React,{ useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+
 
 
 function FormularioImagen() {
@@ -10,166 +11,129 @@ function FormularioImagen() {
     const { id } = useParams();
 
     //Definimos un valor inicial con useState y con set podemos actualizar ese valor
-    const [ubicacion, setUbicacion] = useState('');
-    const [nroDeOrden, setNroDeOrden] = useState('');
-    const [ProductoId, setProductoId] = useState('');
-    const [data, setData] = useState({});
-
-    //Trae la data de la BD del objeto mediante metodo put, llamado por axios
-    const cargarImagen = (id) => {
-        axios.get('/imagen/' + id).then((respuesta) => {
-            console.log("***", respuesta)
-
-            // setLoading(false);
-            if (respuesta.status === 200) {
-                console.log("respuesta correcta", respuesta.data.data)
-                setUbicacion(respuesta.data.data.ubicacion);
-                setNroDeOrden(respuesta.data.data.nroDeOrden);
-                setProductoId(respuesta.data.data.ProductoId);
-                setData(respuesta.data.data)
-            } else {
-                console.log("error")
-            }
-
-        }).catch((error) => {
-            console.log("error", error)
-        });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+   const [imagenes, setImagenes] = useState([]);    
+    const [imagen, setImagen] = useState({
+     id: '',
+     ubicacion: '',
+     nroDeOrden: '',
+   });
+   const fetchImagen = async () => {
+    try {
+      setLoading(true);
+      const respuesta = await axios.get('/imagen/prod/' + id);
+      console.log(respuesta);
+      setImagenes(respuesta.data.data);
+      setLoading(false);
+    } catch (error) {
+      setError(error.message);
+      setLoading(false);
     }
+  };
+
+useEffect(() => {     
+  fetchImagen();  
+}, [id]);
+
+const handleChange = (event) => {
 
 
-    //El useEffect se activa una vez al renderizar el componente. Luego con el segundo argumento definimos que se active si el valor de "id" sufre algun cambio
-    useEffect(() => {
+  const { name, value } = event.target;
+  setImagen({ ...imagen, [name]: value });
+}
+  
+const handleSubmit = async (event) => {
+event.preventDefault();
+try {        
+   imagen.ProductoId = id;
+    const respuesta = await axios.post('/imagen', imagen);
+    console.log('******', imagen)
+    console.log(respuesta.data);
+   fetchImagen();
+    setImagen({nroDeOrden:"", ubicacion:"" });  
+     navigate('/admin/imagen');
+} catch (error) {
+  setError(error.message);
+}
+};
 
-        console.log("id", id)
+  return (
+    <>
+    <div>
+    <div>
+    <div className='p-6 text-2xl font-bold text-center text-white bg-red-600'>
+    { imagen.id ?  "Editar imagen" : "Crear nueva imagen"} 
+    </div>
+    {loading ? (
+      <p>Cargando...</p>
+    ) : (
+      <div className="max-w-md p-5 mx-auto mt-10 bg-white rounded-lg shadow-md">
+          
+        <form onSubmit={handleSubmit}>
+           
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="ubicacion">
+            Ubicacion:
+            </label>
+            <input
+              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              id="ubicacion"
+              type="text"
+              name="ubicacion"
+              value={imagen.ubicacion}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="nroDeOrden">
+              Nro De Orden:
+            </label>
+            <input
+              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              id="nroDeOrden"
+              type="number"
+              name="nroDeOrden"
+              value={imagen.nroDeOrden}
+              onChange={handleChange}
+            />
+          </div>
+         
+          
+          <div className='flex justify-center'>
 
-        if (id === "nuevo") {
-            //limpiamos los campos del input para que esten vacios
-            setUbicacion('');
-            setNroDeOrden('');
-            setProductoId('');
-        }
-        else {
-            cargarImagen(id)
-        }
-
-    }, [id])
-
-    //Funcion que mediante axios llama a la base de datos y con el metodo post envia el objeto nuevo 
-    const guardarImagen = (objetoImagen) => {
-        axios.post('/imagen/', objetoImagen).then((respuesta) => {
-            console.log("*", respuesta)
-
-            // setLoading(false);
-            if (respuesta.status === 201) {
-                console.log("respuesta correcta", respuesta.data.data)
-                navigate("/admin/imagen");
-                setData(respuesta.data.data)
-            } else {
-                console.log("error")
-            }
-
-        }).catch((error) => {
-            console.log("error", error)
-        });
-    }
-    //Funcion que mediante axios llama a la base de datos y con el metodo put modifica el objeto seleccionado por el id
-    const actualizarImagen = (objetoImagen, id) => {
-        axios.put('/imagen/' + id, objetoImagen).then((respuesta) => {
-            console.log("***", respuesta)
-
-            // setLoading(false);
-            if (respuesta.status === 200) {
-                console.log("respuesta correcta", respuesta.data.data)
-                navigate("/admin/imagen");
-                setData(respuesta.data.data)
-            } else {
-                console.log("error")
-            }
-
-        }).catch((error) => {
-            console.log("error", error)
-        });
-    }
-    //guardamos en un objeto las propiedades para luego crear una imagen nueva
-    const guardar = () => {
-
-        const objData = {
-
-            ubicacion: ubicacion,
-            nroDeOrden: nroDeOrden,
-            ProductoId: ProductoId,
-        }
-
-
-        console.log("objData " + objData)
-
-
-        if (id === "nuevo") {
-            console.log("es nuevo")
-            guardarImagen(objData)
-        }
-
-        else {
-            console.log("es editar")
-            actualizarImagen(objData, id)
-        }
-
-
-
-
-    }
-
-    return (
-        <div>
-
-            <div className="m-4 text-xl font-medium"> Formulario de gestión de imagen</div>
-
-            <div className="grid m-4 ">
-                <div className="flex m-4 space-x-16 ">
-                    <div className=" p-3">Ubicacion</div>
-                    <div>
-                        <input value={ubicacion}
-                            onChange={(e) => setUbicacion(e.target.value)}
-                            type="text"
-                            placeholder="completar con ubicacion de la imagen"
-                            className=" w-96 p-3 text-black bg-gray-200 rounded-md " />
-
-                    </div>
-                </div>
-                <div className="flex m-4 space-x-4  ">
-                    <div className="mt-4 mr-3">Numero De Orden</div>
-                    <div>
-                        <input value={nroDeOrden}
-                            onChange={(e) => setNroDeOrden(e.target.value)}
-                            type="text"
-                            placeholder="completar con nro de orden"
-                            className=" w-96 p-3 text-black bg-gray-200 rounded-md " />
-
-                    </div>
-                </div>
-                <div className="flex m-4 space-x-16 ">
-                    <div className="mt-4 mr-3">Producto Id</div>
-                    <div>
-                        <input value={ProductoId}
-                            onChange={(e) => setProductoId(e.target.value)}
-                            type="text"
-                            placeholder="completar con nro de prodcuto"
-                            className="w-96 p-3 text-black bg-gray-200 rounded-md " />
-
-                    </div>
-                </div>
-            </div>
-            <div><button className="m-10 p-3 bg-black text-white rounded-lg " onClick={() => guardar()}>GUARDAR</button></div>
             <button
-                className="m-10 p-3 font-bold text-white bg-red-500 rounded hover:bg-red-700 focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={() => navigate('/admin/imagen')}
+              className="px-4 py-2 mx-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+              type="submit"
             >
-                Cancelar
+              Guardar
             </button>
-        </div>
-    )
+            <button
+              className="px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700 focus:outline-none focus:shadow-outline"
+              type="button"
+              onClick={() => navigate('/admin/producto')}
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
 
+    )}
+    {error && <p style={{ color: 'red' }}>{error}</p>}
+  </div>
+     
+   
+
+  </div>
+  </>
+);
 }
 
 export default FormularioImagen;
+
+
+
+
+    
+   

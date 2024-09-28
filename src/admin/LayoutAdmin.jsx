@@ -17,6 +17,9 @@ function LayoutAdmin() {
                 <div className="mr-4 hover:text-red-500"> 
                     <Link to="/admin/imagen"> Imagenes </Link>
                 </div>
+                <div className="mr-4 hover:text-red-500"> 
+                    <Link to="/admin/usuario"> Usuarios </Link>
+                </div>
                 
             </nav>
 
