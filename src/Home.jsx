@@ -2,15 +2,16 @@ import { useEffect, useState } from 'react';
 
 import axios from 'axios';
 import Listado from './Listado.jsx';
-
-import './Home.css';
+import Navbar from './Navbar.jsx';
+import Buscador from './Buscador.jsx';
+import Filtro from './Filtro.jsx';
+//import Home from './Home.css';
 
 
 function Home() {
 
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-
 
   useEffect(() => {
         
@@ -23,8 +24,11 @@ function Home() {
 
       setLoading(false);
       if (respuesta.status === 200) {
-        console.log("respuesta correcta")
+        
         setData(respuesta.data.data)
+
+        console.log("respuesta Data" + JSON.stringify(data) )
+       
       } else {
         console.log("error")
       }
@@ -35,16 +39,16 @@ function Home() {
 
   return (
     <>
-      <div className='bg-yellow-400 font-bold text-center p-6'>
-        APP Ecommerce
-      </div>
+     
 
       {(loading == true) ?
         <div>Cargando...</div> 
         :
         <div>
-        
-          <Listado productos={data}  />
+        <Navbar/>
+        <Buscador/>
+         <Listado productos={data} />
+           {/* <Filtro productos={data}/> */}
          </div>
        
       }

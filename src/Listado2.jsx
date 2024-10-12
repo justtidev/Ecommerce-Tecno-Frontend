@@ -116,7 +116,7 @@
 
 
 
-function Listado(props) {
+function Listado2(props) {
 
   const { productos } = props;
 
@@ -126,75 +126,35 @@ function Listado(props) {
 
 
   return (
-    <>
+<>
+    <div  >
    
-        <div className="bg-white">
-        <div className="mx-20 max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900">Productos</h2>
 
-          <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-            {/*   filtrarElementosSegunPagina().filter((producto) =>
-                producto.nombre.toLowerCase().includes(filtro.toLowerCase())
-              ). */}
-            {productos.map((producto, index) =>
-
-              <div key={producto.id} className="group relative">
-                <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-50">
-                  {/* <img src="src\assets\Imagenes\Notebook Lenovo Loq 3.webp" */}
-                  <img src={(productos[index].Imagens[0].ubicacion) }
-                className="h-full w-full object-cover object-center lg:h-full lg:w-full" />
-                     {console.log(productos[index].Imagens[0].ubicacion)}
-                </div>
-                <div className="mt-4 flex justify-between">
-                  <div>
-                    <h3 className="text-sm text-gray-700">
-                      <a href="#">
-                        <span aria-hidden="true" className="absolute inset-0"></span>
-                        {producto.nombre}
-                      </a>
-                    </h3>
-                    <p className="mt-1 text-sm text-gray-500">{producto.descripcionBreve}</p>
-                  </div>
-                  <p className="text-sm font-semibold text-gray-900">${producto.precioUnitario}</p>
-                </div>
-                <button className="bg-green-600 hover:bg-green-400 my-2 text-md text-gray-900 rounded-lg p-2 ">Agregar al carrito</button>
-                <a  className="m-2 underline " href="Mas detalles">Mas detalles</a>
-              </div>
-            )}
-            {/* <!-- More products... --> */}
-          </div>
-        </div>
-      </div>
-    </>
-  )
-}
-export default Listado;
-{/* 
-    <div classNameName="p-5">
-      <div classNameName=' *: font-bold   text-center p-6'>
-        Listado de Productos
-      </div>
-
-      <div classNameName=" grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-5 " >
+      <div className="" >
         {productos.map((producto, index) =>
 
 
-          <div key={index} classNameName="bg-gray-200   mb-1  md:mb-4 p-2 rounded-md " >
+          <div key={index} className=" my-4 items-center  relative group bg-white border rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105" >
 
 
 
-             <div>  <img src={} alt=".." classNameName="" /> </div>  
-            <div><img  /> </div> 
+             {/* <div>  <img src={} alt=".." classNameName="" /> </div>  */}
+            <div><img className="w-full  bg-gray-200 flex items-center gap-2 my-4 overflow-hidden" src={(productos[index].Imagens[0].ubicacion)} /> </div> 
            <div> </div>
-            <div>Id:{producto.id}</div>
-            <div> {producto.nombre}</div>
-            <div> {producto.descripcionBreve}</div>
-            <div> {producto.precio}</div>
+            
+            <div className='text-black text-2xl'> {producto.nombre}</div>
+            <div className="">  {producto.descripcionBreve}</div>
+            <div className="text-black text-2xl "> $ {producto.precioUnitario}</div>
+            <button className="bg-green-600 hover:bg-green-400 my-2 text-md text-gray-900 rounded-lg p-2 ">Agregar al carrito</button>
+               <div><a  className="m-2 underline " href="Mas detalles">Mas detalles</a></div> 
           </div>,
 
         )}
       </div>
- */}
+      </div>
+      </>
+      )}
 
+export default Listado2;
 
 

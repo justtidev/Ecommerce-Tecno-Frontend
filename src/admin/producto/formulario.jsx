@@ -14,12 +14,13 @@ const FormularioProducto = () => {
     const [producto, setProducto] = useState({
         nombre: "",
         descripcionBreve: "",
-        precioUnitario: "",
-        stock: "",
+        precioUnitario: 0,
+        stock: 0,
         descripcionDetallada: "",
         costoProducto: "",
         disponible: false,
         CategoriumId: "",
+        
 
     });
 
@@ -68,8 +69,8 @@ const FormularioProducto = () => {
             setProducto({
                 nombre: "",
                 descripcionBreve: "",
-                precioUnitario: "",
-                stock: "",
+                precioUnitario: 0,
+                stock: 0,
                 descripcionDetallada: "",
                 costoProducto: "",
                 disponible: false,
@@ -152,9 +153,9 @@ const FormularioProducto = () => {
                             <label className="p-3">Precio Unitario</label>
 
                             <input
-                                id="precio"
+                                id="precioUnitario"
                                 type="number"
-                                name="precio"
+                                name="precioUnitario"
                                 value={producto.precioUnitario}
                                 onChange={handleChange}
                                 className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" />
@@ -234,7 +235,7 @@ const FormularioProducto = () => {
 
 
                         <div className='flex justify-center'>
-                            <button className="px-4 py-2 mx-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline" type="submit" >Guardar</button>
+                            <button className="px-4 py-2 mx-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline" type= "submit" >Guardar</button>
                             <button
                                 className="px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700 focus:outline-none focus:shadow-outline"
                                 type="button"
