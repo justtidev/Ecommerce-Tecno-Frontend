@@ -132,20 +132,17 @@ function Listado(props) {
         <div className="mx-20 max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900">Productos</h2>
 
-          <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-            {/*   filtrarElementosSegunPagina().filter((producto) =>
-                producto.nombre.toLowerCase().includes(filtro.toLowerCase())
-              ). */}
+          <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4  xl:gap-x-8">
+          
             {productos.map((producto, index) =>
 
-              <div key={producto.id} className="group relative">
-                <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-50">
-                  {/* <img src="src\assets\Imagenes\Notebook Lenovo Loq 3.webp" */}
+              <div key={producto.id} className=" grid p-2 mx-auto overflow-hidden rounded-2xl bg-white border-2 border-gray-400 shadow-slate-600 shadow-xl ">
+                <div className="">
                   <img src={(productos[index].Imagens[0].ubicacion) }
-                className="h-full w-full object-cover object-center lg:h-full lg:w-full" />
-                     {console.log(productos[index].Imagens[0].ubicacion)}
+                className="object-cover h-[200px] w-full" />
+                   
                 </div>
-                <div className="mt-4 flex justify-between">
+                <div className=" flex flex-col-1 justify-between">
                   <div>
                     <h3 className="text-sm text-gray-700">
                       <a href="#">
@@ -154,11 +151,13 @@ function Listado(props) {
                       </a>
                     </h3>
                     <p className="mt-1 text-sm text-gray-500">{producto.descripcionBreve}</p>
-                  </div>
-                  <p className="text-sm font-semibold text-gray-900">${producto.precioUnitario}</p>
-                </div>
+                    <p className="text-md font-semibold text-gray-900">${producto.precioUnitario}</p>
+                  
                 <button className="bg-green-600 hover:bg-green-400 my-2 text-md text-gray-900 rounded-lg p-2 ">Agregar al carrito</button>
                 <a  className="m-2 underline " href="Mas detalles">Mas detalles</a>
+                </div>
+                 
+                </div>
               </div>
             )}
             {/* <!-- More products... --> */}

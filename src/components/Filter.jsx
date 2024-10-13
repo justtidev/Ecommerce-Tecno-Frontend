@@ -29,7 +29,7 @@ import {
 } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
-import Listado2 from './Listado2'
+import Listado2 from '../Listado2.jsx'
 
 const sortOptions = [
   { name: 'Most Popular', href: '#', current: true },
@@ -87,7 +87,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Filtro(props) {
+export default function Filter(props) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const {productos} = props
 
