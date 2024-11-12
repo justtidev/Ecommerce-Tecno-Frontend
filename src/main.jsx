@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 import axios from 'axios';
-
+import App from './App.jsx'
 import Home from './Home.jsx';
 import Dashboard from './admin/Dashboard.jsx';
 import LayoutAdmin from './admin/LayoutAdmin.jsx';
@@ -19,6 +19,7 @@ import ProductoIndex from './admin/producto/index.jsx';
 import FormularioProducto from './admin/producto/formulario.jsx';
 import UsuarioIndex from './admin/usuario/index.jsx';
 import FormularioUsuario from './admin/usuario/formulario.jsx';
+import DetalleProducto from './components/DetalleProducto.jsx';
 
 import './index.css'
 
@@ -34,7 +35,18 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+    children: [
+      
+    ]
   },
+  
+    {
+      path: "detalleProducto/:id",
+      element: <DetalleProducto />,
+    },
+
+  
+
   {
     path: "/admin",    
     element: <LayoutAdmin />,
@@ -84,9 +96,14 @@ const router = createBrowserRouter([
     
 ]);
 
+
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <RouterProvider router={router}  />
+    
+   
+  
   </StrictMode>,
 )
 

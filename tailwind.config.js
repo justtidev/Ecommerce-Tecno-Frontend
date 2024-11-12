@@ -5,14 +5,20 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
-   //flowbite.content(),
+    'flowbite/content'
+
   ],
-  theme: {
-    extend: {},
+   theme: {
+    extend: {
+      gridTemplateRows: {
+        '[auto,auto,1fr]': 'auto auto 1fr',
+      }
   },
-  plugins: [require('@tailwindcss/aspect-ratio'), require('@tailwindcss/forms')],
-  //flowbite.plugin(),
+  plugins: [require('@tailwindcss/aspect-ratio'), require('@tailwindcss/forms'), require('flowbite/plugin'),]
+  
 }
 
 
 
+
+}

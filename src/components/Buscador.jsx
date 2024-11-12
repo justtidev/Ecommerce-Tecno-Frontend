@@ -1,20 +1,42 @@
-import { useState } from "react";
-export default function Buscador(){
-    const [filtro, setFiltro] = useState('');
-    return (
-    <div className=' px-4 py-4 mx-20'>
-
-            <input
-              type='text'
-              className=' w-1/4 border border-gray-400 rounded'
-              placeholder='Buscar por nombre'
-              value={filtro}
-              onChange={(e) => setFiltro(e.target.value)}
-            
-            
-            /></div>
-
+import '@fontsource/roboto/300.css';
+import { Typography } from '@mui/material';
+export default function Buscador({filtro, setFiltro}){
     
+    return (
+  
+
+          
+            <div className="relative ml-10 my-4">
+          <label htmlFor="Search" className="sr-only"> </label>
+          <input
+          
+            type="text"
+            placeholder= "BUSCAR "
+            className="w-50  rounded-lg border-gray-400 p-4 shadow-md  sm:text-sm"
+            value={filtro}
+            onChange={(e) => setFiltro(e.target.value)} />
+           <span className="absolute inset-y-0 end-0 grid place-content-center" >
+         
+            <button type="button" className="text-gray-700 hover:text-gray-700 ">
+              <span className="sr-only"></span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-4 ">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+              </svg>
+            </button>
+          </span>
+        </div>
+            
+
+  
         )
 
 }

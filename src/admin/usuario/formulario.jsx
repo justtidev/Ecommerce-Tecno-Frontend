@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function FormularioUsuario() {
+const FormularioUsuario = ()=> {
 
     const { id } = useParams();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null)
 
     const [usuario, setUsuario] = useState({
         id: '',
@@ -19,24 +21,17 @@ function FormularioUsuario() {
     
 
     //Trae la data de la BD del objeto mediante metodo put, llamado por axios
-    const cargarUsuario = (id) => {
-        axios.get('/usuario/' + id).then((respuesta) => {
-            console.log("***", respuesta)
-
-            // setLoading(false);
-            if (respuesta.status === 200) {
-                console.log("respuesta correcta", respuesta.data.usuario)
-                setUsuario(respuesta.data.usuario);
-
-              //  setData(respuesta.data.data)
-            } else {
-                console.log("error")
-            }
-
-        }).catch((error) => {
-            console.log("error", error)
-        });
-    }
+    const fetchUsuario = async () => {
+        try{
+            setLoading(true);
+            const respuesta = await axios.get('/usuario/' + id);
+            setUsuario(respuesta.data.data);
+           setLoading(false);
+        }catch (error){
+            setError(error.message);
+            setLoading(false);
+        }
+    };
 
 
     useEffect(() => {
@@ -53,156 +48,137 @@ function FormularioUsuario() {
                 contraseña: '',
                 rol: '',
             })}
-          
+        else{
+            fetchUsuario(id)
 
-        else {
-            cargarUsuario(id)
         }
 
     }, [id])
 
-    const guardarUsuario = (objetoUsuario) => {
-        axios.post('/usuario/', objetoUsuario).then((respuesta) => {
-            console.log("*", respuesta)
+    const handleChange = (event) => {
+        console.log(event.target.name, event.target.value);
+        if (event.target.name === 'disponible') {
+            setUsuario({ ...usuario, [event.target.name]: event.target.checked });
+        } else {
+            const { name, value } = event.target;
+            setUsuario({ ...usuario, [name]: value });
+        }
+    };
 
-            // setLoading(false);
-            if (respuesta.status === 201) {
-                console.log("respuesta correcta", respuesta.data.data)
-                navigate("/admin/usuario");
-                setData(respuesta.data.data)
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        try {
+            if (id === 'nuevo') {
+                const respuesta = await axios.post('/usuario ', usuario);
+
+                console.log('llego' + respuesta.data);
+                navigate('/admin/usuario');
             } else {
-                console.log("error")
+                const respuesta = await axios.put('/usuario/' + id, usuario);
+                console.log(respuesta.data);
+                navigate('/admin/usuario');
             }
-
-        }).catch((error) => {
-            console.log("error", error)
-        });
-    }
-    //Funcion que mediante axios llama a la base de datos y con el metodo put modifica el objeto seleccionado por el id
-    const actualizarUsuario = (objetoUsuario, id) => {
-        axios.put('/usuario/' + id, objetoUsuario).then((respuesta) => {
-            console.log("***", respuesta)
-
-            // setLoading(false);
-            if (respuesta.status === 200) {
-                console.log("respuesta correcta", respuesta.data.data)
-                navigate("/admin/usuario");
-                setData(respuesta.data.data)
-            } else {
-                console.log("error")
-            }
-
-        }).catch((error) => {
-            console.log("error", error)
-        });
-    }
-
-    const guardar = () => {
-
-        const objData = {
-
-            nombre: nombre,
-            apellido: apellido,
-            email: email,
-            contraseña: contraseña,
-            rol: rol,
-
-
-
-
+        } catch (error) {
+            setError(error.message);
         }
 
+    };
 
-        console.log("objData " + objData)
-
-
-        if (id === "nuevo") {
-            // llamda con axios a la ruta del post
-            console.log("es nuevo")
-            guardarUsuario(objData)
-
-        }
-
-        else {
-            console.log("es editar")
-            actualizarUsuario(objData, id)
-        }
-
-
-
-
-    }
-
-    return (
-        <div>
-
-            <div> Formulario de gestión de usuario</div>
-
-            <div className="grid m-10 ">
-                <div className="flex m-4 ">
-                    <div className="mt-4 mr-3">Nombre</div>
-                    <div>
-                        <input value={usuario.nombre}
-                            onChange={(e) => setNombre(e.target.value)}
-                            type="text"
-                            placeholder="completar con el nombre"
-                            className="w-96 p-3 text-black bg-gray-200 rounded-md " />
-
-                    </div>
-                    <div className="mt-4 mr-3">Apellido</div>
-                    <div>
-                        <input value={apellido}
-                            onChange={(e) => setApellido(e.target.value)}
-                            type="text"
-                            placeholder="completar con el apellido"
-                            className="w-96 p-3 text-black bg-gray-200 rounded-md " />
-
-                    </div>
-                    <div className="mt-4 mr-3">Email</div>
-                    <div>
-                        <input value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            type="email"
-                            placeholder="completar con el email"
-                            className="w-96 p-3 text-black bg-gray-200 rounded-md " />
-
-                    </div>
-                    <div className="mt-4 mr-3">Contraseña</div>
-                    <div>
-                        <input value={contraseña}
-                            onChange={(e) => setContraseña(e.target.value)}
-                            type="text"
-                            placeholder="completar con la contraseña"
-                            className="w-96 p-3 text-black bg-gray-200 rounded-md " />
-
-                    </div>
-                    <div className="mt-4 mr-3">Rol</div>
-                    <div>
-                        <select onChange={(e) => setRol(e.target.value)}>
-                        
-                            {usuario.map((usuario, index) => (
-                            <option key={index} value={usuario.id}>
-                                {usuario.rol}
-                            </option>
-                ))}
-                        </select>
-
-
-                    </div>
-
-
-
-                </div>
-            </div>
-            <div><button className="m-10 p-3 bg-black text-white rounded-lg " onClick={() => guardar()}>GUARDAR</button></div>
-            <button
-                className="px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700 focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={() => navigate('/admin/usuario')}
-            >
-                Cancelar
-            </button>
+   
+    return ( <div>
+        <div className='p-6 text-2xl font-bold text-center text-white bg-grey-800'>
+            {usuario.id ? "Editar usuario" : "Crear nuevo usuario"}
         </div>
+        {loading ? (
+            <p>Cargando...</p>
+        ) : (
+            <div className="max-w-md p-5 mx-auto mt-10 bg-white rounded-lg shadow-md" >
+                <form onSubmit={handleSubmit}>
+                    <div className=" mb-4 ">
+                        <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="nombre">Nombre</label>
+
+                        <input
+                            className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                            id="nombre"
+                            type="text"
+                            name="nombre"
+                            value={usuario.nombre}
+                            onChange={handleChange}
+
+                        />
+                    </div>
+                    <div className=" mb-4  ">
+                        <label className="block mb-2 text-sm font-bold text-gray-700" > apellido</label>
+
+                        <input
+                            id="apellido"
+                            type="text"
+                            name="apellido"
+                            value={usuario.apellido}
+                            onChange={handleChange}
+                            className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" />
+
+                    </div>
+                    <div className="block mb-2 text-sm font-bold text-gray-700">
+                        <label className="p-3">Email</label>
+
+                        <input
+                            id="email"
+                            type="text"
+                            name="email"
+                            value={usuario.email}
+                            onChange={handleChange}
+                            className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" />
+
+                    </div>
+
+                    <div className="block mb-2 text-sm font-bold text-gray-700">
+                        <label className="p-3">Contraseña</label>
+
+                        <input
+                            id="contraseña"
+                            type="text"
+                            name="contraseña"
+                            value={usuario.contraseña}
+                            onChange={handleChange}
+                            className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" />
+
+
+                    </div>
+
+                    <div className="block mb-2 text-sm font-bold text-gray-700">
+                            <label className="p-3">Rol</label>
+
+                        <input
+                            id="rol "
+                            type="text"
+                            name="rol"
+                            value={usuario.rol}
+                            onChange={handleChange}
+                            className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline" />
+                    </div>
+
+
+                    <div className='flex justify-center'>
+                        <button className="px-4 py-2 mx-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline" type= "submit" >Guardar</button>
+                        <button
+                            className="px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700 focus:outline-none focus:shadow-outline"
+                            type="button"
+                            onClick={() => navigate('/admin/usuario')}
+                        >
+                            Cancelar
+                        </button>
+                    </div>
+                </form >
+            </div>
+        )
+        }
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+    </div >
+
+       
     )
 
 }

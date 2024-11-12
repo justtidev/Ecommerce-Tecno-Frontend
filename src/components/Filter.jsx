@@ -29,7 +29,7 @@ import {
 } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
-import Listado2 from '../Listado2.jsx'
+//import Listado2 from '../Listado2.jsx'
 
 const sortOptions = [
   { name: 'Most Popular', href: '#', current: true },
