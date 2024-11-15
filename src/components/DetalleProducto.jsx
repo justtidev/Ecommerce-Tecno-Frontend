@@ -9,7 +9,8 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './Navbar.jsx';
 import Footer from './Footer.jsx';
-
+import { CarritoContext } from '../context/CarritoContext';
+import Carrito from './Carrito';
 
 
 const product = {
@@ -32,6 +33,7 @@ export default function DetalleProducto() {
   const [producto, setProducto] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { agregarAlCarrito } = useContext(CarritoContext);
 
   const [selectedColor, setSelectedColor] = useState(product.colors[0])
 
@@ -54,11 +56,10 @@ export default function DetalleProducto() {
   if (loading) return <p className="text-center text-2xl">Cargando...</p>;
   if (error) return <p className="text-center text-2xl text-red-600">{error}</p>;
 
+  const handleAgregarAlCarrito = () => {
+  agregarAlCarrito(producto)
 
-  /* const categoria= producto.CategoriumId
-
-console.log('categorias',categorias) */
-
+  }
 
 
   return (
@@ -150,7 +151,7 @@ console.log('categorias',categorias) */
                   <button
                     type="submit"
                     className="mt-10 mb-4 flex w-full items-center justify-center  border border-transparent bg-green-600 hover:bg-green-400 my-2 text-md text-gray-900 rounded-lg p-2 focus:ring-offset-2"
-                  >
+                 onClick={handleAgregarAlCarrito} >
                     Agregar al carrito
                   </button>
                   <div className='mt-10 mx-4 p-4  '>
@@ -197,6 +198,7 @@ console.log('categorias',categorias) */
         </div>
 
       </div>
+      
       <Footer/>
     </>
   )

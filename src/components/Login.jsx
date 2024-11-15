@@ -1,35 +1,52 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { AuthContext } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+/* import { AuthContext } from '../context/AuthContext'; */
+import { useNavigate, Link } from 'react-router-dom';
+import axios from "axios"
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const { login, token } = useContext(AuthContext);
+  const [email, setEmail] = useState('');
+  const [contraseña, setContraseña] = useState('');
+/*   const { login, token } = useContext(AuthContext); */
  
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login(username, password);
-      navigate('/protected');
-    } catch (error) {
-      console.error('Error de autenticación:', error);
-    }
-  };
+      const response = await axios.post('http://localhost:3000/auth/login', {
+        email,
+        contraseña,
+    });
+    console.log(response)
+    if(response.data.ok) {
+      alert( 'Inicio de sesión exitoso');
+    
+    const rol = response.data.usuario.rol;
 
-  useEffect(() => { 
-    console.log("token", token)
-    if (token) {
-      navigate('/protected');
+    if (rol === 'Usuario') {
+      // Redirigir a la página de usuario
+      navigate('/')
+    } else if (rol === 'Administrador') {
+      // Redirigir a la página del administrador
+     navigate('/admin/')
+    } else {
+      // Si el rol no es válido, mostramos un mensaje de error
+      alert("error, no autorizado");
     }
-  }, [token, navigate ]);
+  } else {
+    alert('Error usuario o contraseña incorrecto');
+  }
+} catch (error) {
+  console.log('Error al iniciar sesión:', error);
+ 
+};
+}
 
+ 
   return (
-    <form className='' onSubmit={handleLogin}>
-      <input type="text" placeholder="Usuario" value={username} onChange={(e) => setUsername(e.target.value)} />
-      <input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} />
+    <form className='' onSubmit={handleSubmit}>
+      <input type="email" placeholder="Usuario" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <input type="contraseña" placeholder="Contraseña" value={contraseña} onChange={(e) => setContraseña(e.target.value)} />
       <button type="submit">Iniciar sesión</button>
     </form>
   );

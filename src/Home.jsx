@@ -76,6 +76,8 @@ function Home() {
 
   }, [])
 
+  
+    
   const onPageChange = (page) => setPagina(page);
 
   return (
@@ -86,7 +88,7 @@ function Home() {
 
       <Banner />
 
-      <div className="grid grid-cols-12  p-5">
+      <div className="grid grid-cols-12 p-5 ">
 
 
         <div className='col-span-4 md:col-span-2 '>
@@ -114,8 +116,9 @@ function Home() {
           </div>
           <div className='flex justify-center w-full'>
 
-            {data && data.length > 0 &&  
+          {data && data.length > 0 &&  
             <div className="flex my-10 overflow-x-auto sm:justify-center">
+             
               <Pagination currentPage={pagina} totalPages={parseInt(cantidadItems / 4)} onPageChange={onPageChange} />
             </div>
           }
@@ -126,7 +129,7 @@ function Home() {
       </div>
 
       <WhatsAppButton />
-      <div className=''>
+      <div className='w-full'>
         <Footer id='Contacto' />
       </div>
 

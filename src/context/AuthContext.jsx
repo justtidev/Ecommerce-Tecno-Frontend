@@ -12,17 +12,18 @@ export const AuthProvider = ({ children }) => {
     }
   }, [token]);
 
-  const login = async (username, password) => {
-    console.log("llega a login", username, password)
-    const response = await axios.post('http://localhost:3000/auth/login', { username, password });
+  const login = async (email, contraseña) => {
+    console.log("llega a login", email, contraseña)
+    const response = await axios.post('http://localhost:3000/auth/login', { email, contraseña });
     console.log("llega a login", response)
     const accessToken = response.data.accessToken;
     setToken(accessToken);
     localStorage.setItem('accessToken', accessToken);
   };
 
-  const register = async (username, password) => {
-    await axios.post('http://localhost:3000/auth/register', { username, password });
+  const register = async (nombre, apellido, email, contraseña, rol) => {
+    await axios.post('http://localhost:3000/auth/register', {nombre, apellido, email, contraseña, rol });
+    console.log(nombre)
   };
 
   const refreshToken = async () => {

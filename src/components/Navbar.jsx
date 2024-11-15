@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon, ShoppingCartIcon, UserIcon } from '@heroicons/react/24/outline'
 import { AddCard, Countertops } from '@mui/icons-material'
+import Carrito from './Carrito.jsx'
+
 
 
 const user = {
@@ -10,7 +13,7 @@ const user = {
 
 const navigation = [
   { name: 'Productos', href: '#Productos', current: true },
-  { name: 'Categorias', href: '#', current: false },
+ 
   { name: 'Contacto', href: '#Contacto', current: false },
   { name: 'Ayuda', href: '#', current: false },
 ]
@@ -25,12 +28,13 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+  const [active, setActive] = useState(false);
   return (
     <>
 
       <div className=" ">
         <Disclosure as="nav" className="bg-white">
-          <div className="mx-20 max-w-6xl px-10 sm:px-6 lg:px-20">
+          <div className="mx-10 max-w-7xl px-10 sm:px-6 lg:px-20">
             <div className="flex h-20 items-center justify-between">
               <div className="flex items-center">
                 <div className="flex">
@@ -40,8 +44,9 @@ export default function Navbar() {
                     className="h-10 w-10"
                   />
                 </div>
+                
                 <div className="hidden md:block">
-                  <div className="ml-10 flex items-baseline space-x-4">
+                  <div className=" ml-10 flex items-baseline space-x-4">
                     {navigation.map((item) => (
                       <a
                         key={item.name}
@@ -49,7 +54,7 @@ export default function Navbar() {
                         aria-current={item.current ? 'page' : undefined}
                         className={classNames(
                           item.current ? ' text-gray-700 hover:underline hover:text-gray-900 ' : 'text-gray-700 hover:text-underline hover:text-gray-900 hover:underline',
-                          'px-3 py-2 text-l font-large',
+                          'px-3 py-2 text-xl font-large',
                         )}
                       >
                         {item.name}
@@ -57,26 +62,14 @@ export default function Navbar() {
                     ))}
                   </div>
                 </div>
-              </div>
-            
-             {/* Logo Carrito */}
-              <div className="hidden md:block">
-                <div className="ml-4 flex items-center md:ml-6">
-                  <button
-                    type="button"
-                     className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" 
-                  >
-                    <span className="absolute -inset-1.5" />
-                    <span className="sr-only">Carrito</span>
-                    <ShoppingCartIcon aria-hidden="true" className="h-6 w-6" />
-                    
-                  </button>
+                </div>
                 
-
-                
+             
+                    <div className='flex'>
+                <div className='hidden md:block '>
 
                   {/* Menu de Perfil Usuario */}
-                  <Menu as="div" className="relative ml-3">
+                  <Menu as="div" className=" ">
                     <div>
                     <MenuButton
                     type="button"
@@ -104,7 +97,34 @@ export default function Navbar() {
                     </MenuItems>
                   </Menu>
                 </div>
-              </div>
+              
+
+              {/* Logo Carrito */}
+              
+                <div className=" container-icon ml-2 flex items-center md:ml-2 ">
+                
+                  <button
+                    type="button"
+                     className=" container-cart-icon  rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" 
+                  onClick={() => setActive(!active)}>
+                    <span className="absolute -inset-1.5" />
+                    <span className="sr-only">Carrito</span>
+                    <ShoppingCartIcon aria-hidden="true" className="h-6 w-6" />
+                    
+                  </button>
+                  <div
+					className={`container-cart-products ${
+						active ? '' : 'hidden-cart'
+					}`}>
+          {<Carrito/>}
+				
+
+          </div>
+       
+        </div> 
+        </div> 
+        
+              
               <div className="-mr-2 flex md:hidden">
                 {/* Mobile menu button */}
                 <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
