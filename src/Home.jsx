@@ -27,35 +27,12 @@ function Home() {
   
   const [minPrecio, setMinPrecio] = useState(0);
   const [maxPrecio, setMaxPrecio] = useState(0);
-  const [cupon, setCupon] =useState('')
-  const [descuento, setDescuento] = useState("0")
+  const [cupon, setCupon] =useState(false)
+  const [descuento, setDescuento] = useState('')
+  const[codigo, setCodigo] = useState()
 
-  const obtenerCupones =  () => {
-    axios.get("/cupones/").then((respuesta)=> {
-     console.log('Cupones' + respuesta)
-     if (respuesta.status === 200) {
-       console.log("respuesta", respuesta.data.data)
-   /*    setCupon(respuesta)
-      setDescuento(cupon.descuento)
-     console.log('Cupon',cupon) */
-    
-     } else {
-       console.log("error")
-     }
+ 
 
-   }).catch((error) => {
-    setCupon([]) 
-    
-    console.log("error", error)
-   });
-
-   
-  useEffect(() => {
-    obtenerCupones();
-  
-    
-  }, [])
-}
 
 
   const buscarItems = () => {
@@ -131,7 +108,7 @@ function Home() {
             <Filter2 className="bg-red-100" setCategoriaSeleccionada={setCategoriaSeleccionada} categoriaSeleccionada={categoriaSeleccionada}
              minPrecio={minPrecio} maxPrecio= {maxPrecio} setMinPrecio={setMinPrecio} setMaxPrecio={setMaxPrecio} setFiltro= {setFiltro}/>
           </div>
-          <div> <Cupones setCupon={setCupon} cupon={cupon} /></div>
+          <div> <Cupones setCupon={setCupon} cupon={cupon} codigo={codigo} setCodigo={setCodigo} setDescuento={setDescuento} descuento={descuento} /></div>
           
 
         </div>

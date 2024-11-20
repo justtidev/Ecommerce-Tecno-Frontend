@@ -22,7 +22,7 @@ function LayoutAdmin() {
                     onClick={()=> navigate('/admin/usuario')}>Usuario
                 </button>
                 <button className="mr-4 hover:text-red-500" 
-                    onClick={()=> navigate('/admin/cupon')}>Cupon
+                    onClick={()=> navigate('/admin/cupones')}>Cupon
                 </button>
                
                 

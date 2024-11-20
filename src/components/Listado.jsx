@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Carrito from './CarritoCompras'
 
 import { CarritoContext } from '../context/CarritoContext';
-function Listado({productos, rangoPrecio, setCupon, setDescuento, descuento, cupon}) {
+function Listado({productos, descuento}) {
   const { agregarAlCarrito } = useContext(CarritoContext);
   const navigate = useNavigate();
   
@@ -21,17 +21,21 @@ function Listado({productos, rangoPrecio, setCupon, setDescuento, descuento, cup
 const handleAgregarAlCarrito = (producto) => {
   agregarAlCarrito(producto)
   console.log('producto', producto)
-  alert("Producto agregado")
+ 
  }
 
+ /* Cambia el precioUnitario si tiene Descuento */
  const handlePrecioUnitario =(precioUnitario) =>{
-  const precioCupon =  precioUnitario -(precioUnitario *(descuento/100))
-  return precioCupon
- }
 
-/*  useEffect(() => {
-    handleAgregarAlCarrito();
-}, [id]); */
+  const precioConDescuento =  precioUnitario -(precioUnitario *(descuento/100))
+ return precioConDescuento
+}
+
+
+ useEffect(() => {
+   /*  handleAgregarAlCarrito() */;
+   /*  handlePrecioUnitario() */
+}, []); 
 
 
  
@@ -60,9 +64,18 @@ const handleAgregarAlCarrito = (producto) => {
                         {producto.nombre}
 
                       </h3>
-                      <p className=" grid content-center text-justify p-2 mx-6 text-sm text-gray-500 min-h-16  ">{producto.descripcionBreve}</p>
-                      <p className="text-md font-semibold text-gray-800">${descuento>0 ? handlePrecioUnitario(producto.precioUnitario) : producto.precioUnitario} </p>
+                      <p className=" grid content-center text-justify p-2 mx-6 text-sm text-gray-500 min-h-16  ">
+                        {producto.descripcionBreve}</p>
 
+{/*   Si el estado Descuento es mayor a 0 significa que hay un cupon Valido y tachamos  el precioUnitario con "line-thtough. De lo contrario la className queda sin modificacion"   */}                 
+<p className={`text-md font-semibold text-gray-800 ${descuento>0 ? "line-through" : "" }`}> {producto.precioUnitario} </p>
+                    
+                    {/* Si descuento es mayor a 0 significa que hay un cupon Valido asi que muestro el precio con descuento. Llamando a la funcion handlePrecioUnitario. Si no hay descuento(cupon invalido) escondemos el div con la propiedad "hidden" */}
+                    <div className={`${descuento>0 ? '' : 'hidden' }`}>
+                   <p className="text-md font-semibold text-red-800 ">{`${handlePrecioUnitario(producto.precioUnitario)} ` }</p>
+                 
+                     </div> 
+                      
                       <button onClick={() => handleAgregarAlCarrito(producto)}  className=" btn rounded-lg p-2 ">Agregar al carrito</button>
                       <button type='submit' onClick={() => handleVerDetalles(producto.id)} className='underline' >Mas detalles</button>
                   
@@ -70,7 +83,7 @@ const handleAgregarAlCarrito = (producto) => {
 
                     </div>
                   </div>
-                /* </div> */
+                 /* </div>  */
 
               )}
             </div>
