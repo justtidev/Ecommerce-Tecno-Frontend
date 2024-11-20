@@ -39,7 +39,7 @@ const FormularioUsuario = ()=> {
         console.log("id", id)
 
         if (id === "nuevo") {
-
+            
           setUsuario({
                 id: '',
                 nombre: '',
@@ -47,21 +47,26 @@ const FormularioUsuario = ()=> {
                 email: '',
                 contraseña: '',
                 rol: '',
+                
             })}
+       
+           
         else{
             fetchUsuario(id)
 
         }
-
+        
     }, [id])
 
     const handleChange = (event) => {
         console.log(event.target.name, event.target.value);
         if (event.target.name === 'disponible') {
             setUsuario({ ...usuario, [event.target.name]: event.target.checked });
+
         } else {
             const { name, value } = event.target;
             setUsuario({ ...usuario, [name]: value });
+          
         }
     };
 

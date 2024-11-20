@@ -1,6 +1,12 @@
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+
 
 /* Globales */
 *::after,
@@ -13,9 +19,11 @@
 
 body {
 	margin: 0 auto;
-	max-width: 1200px;
-	font-family: 'Lato';
-	color: #333;
+	max-width: 1300px;
+	font-family: 'Roboto, sans serif';
+	/* color:rgb(107 114 128); */
+color: rgb(75 85 99); 
+/*gray-600*/
 }
 
 .icon-cart {
@@ -67,11 +75,12 @@ header {
 	position: absolute;
 	top: 50px;
 	right: 0;
-
+	
 	background-color: #fff;
 	width: 400px;
+	
 	z-index: 1;
-	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+	box-shadow:0 10px 30px rgba(0, 0, 0, 0.2);
 	border-radius: 10px;
 }
 
@@ -91,13 +100,16 @@ header {
 }
 
 .titulo-producto-carrito {
-	font-size: 20px;
+	font-size: 16px;
+	color: rgb(59 130 246);
+	/* blue-500 */
 }
 
 .precio-producto-carrito {
 	font-weight: 700;
-	font-size: 20px;
+	font-size: 16px;
 	margin-left: 10px;
+	
 }
 
 .cantidad-producto-carrito {
@@ -105,15 +117,7 @@ header {
 	font-size: 20px;
 }
 
-.icon-close {
-	width: 25px;
-	height: 25px;
-}
 
-.icon-close:hover {
-	stroke: red;
-	cursor: pointer;
-}
 
 .cart-total {
 	display: flex;
@@ -143,6 +147,7 @@ header {
 	grid-template-columns: repeat(3, 1fr);
 	gap: 20px;
 }
+
 
 .item {
 	border-radius: 10px;
@@ -199,6 +204,18 @@ header {
 	display: none;
 }
 
+.btn{
+	 border:none ;
+	 background-color: rgb(59 130 246);
+	  color: white;
+	  cursor:pointer;
+	
+                      
+}
+
+.btn:hover{
+	background-color: rgb(29 78 216);
+}
 .btn-clear-all {
 	border: none;
 	background-color: #000;
@@ -220,4 +237,3 @@ header {
   transform: scale(1.03);
   border-radius: 0;
 }
- 

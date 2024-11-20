@@ -38,6 +38,7 @@ const Register = () => {
 
 
     <div className="max-w-md p-5 mx-auto mt-10 bg-white rounded-lg shadow-md" >
+      <h1 className='text-bold text-lg my-8'>Registrarse</h1>
       <form onSubmit={handleSubmit}>
         <div className=" mb-4 ">
           <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="nombre">Nombre</label>
@@ -53,7 +54,7 @@ const Register = () => {
           />
         </div>
         <div className=" mb-4  ">
-          <label className="block mb-2 text-sm font-bold text-gray-700" > apellido</label>
+          <label className="block mb-2 text-sm font-bold text-gray-700" > Apellido</label>
 
           <input
             id="apellido"
@@ -82,7 +83,7 @@ const Register = () => {
 
           <input
             id="contraseña"
-            type="text"
+            type="password"
             name="contraseña"
             value={contraseña}
             onChange={(e) => setContraseña(e.target.value)}

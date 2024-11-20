@@ -9,10 +9,10 @@ import Slide3 from "../assets/ImagenesBanner/bannerHP.avif";
 
 export function Banner() {
   return (
-    <div className="box-border  h-56 sm:h-64 xl:h-80 2xl:h-96">
+    <div className=" h-56 sm:h-64 xl:h-80 2xl:h-96">
       <Carousel>
        
-        <img className=" object-cover w-full h-full " src={Slide1} alt="..." />
+        <img className="object-cover w-full h-full " src={Slide1} alt="..." />
         {/* <img className="object-cover w-full h-full  " src={Slide2} alt="..." /> */}
         <img className="object-cover w-full h-full" src={Slide3} alt="..." />
        

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom"
 import axios from 'axios';
+import LayoutAdmin from '../LayoutAdmin';
 
 function UsuarioIndex() {
 
@@ -81,7 +82,7 @@ function UsuarioIndex() {
     return (
 
         <div>
-
+<LayoutAdmin/>
 
                 <div className='p-6 text-2xl font-bold text-center text-white bg-green '>
                     Gestion de Usuarios
@@ -104,7 +105,7 @@ function UsuarioIndex() {
 
                 <div className='ml-5'>
                     
-                        <button className='p-2 bg-green-500 rounded-md hover:bg-green-700 hover:text-white ' onClick={()=> navigate("/admin/usuario/nuevo")}>Crear Usuario</button>
+                        <button className='p-2 bg-green-500 rounded-md hover:bg-green-700 hover:text-white ' onClick={()=> navigate("/register")}>Crear Usuario</button>
                     </div>
             </div>
 

@@ -1,24 +1,27 @@
-import '@fontsource/roboto/300.css';
-import { Typography } from '@mui/material';
+
 export default function Buscador({filtro, setFiltro}){
-    
+
+   
     return (
   
 
           
-            <div className="relative ml-10 my-4">
-          <label htmlFor="Search" className="sr-only"> </label>
+            <div className="grid justify-items-stretch m-4  ">
+          <label htmlFor="Search" /* className="sr-only" */> </label>
           <input
           
             type="text"
-            placeholder= "BUSCAR "
-            className="w-50  rounded-lg border-gray-400 p-4 shadow-md  sm:text-sm"
-            value={filtro}
-            onChange={(e) => setFiltro(e.target.value)} />
-           <span className="absolute inset-y-0 end-0 grid place-content-center" >
+            placeholder= "Buscar producto "
+            className="text-md text-gray-600 rounded-m border-2 p-2 sm:text-md sm:w-full shadow-slate-600 shadow-xl
+            "   value={filtro}
+            onChange={(e) => setFiltro(e.target.value)}
+           />
+           {/* <span className="absolute  inset-y-0 end-16 flex place-content-center " >
          
-            <button type="button" className="text-gray-700 hover:text-gray-700 ">
-              <span className="sr-only"></span>
+            <button type="submit" className="text-gray-700 hover:text-gray-700 absolute-inset-0 flex items-center "
+          
+            >
+              <span className=" sr-only"></span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -32,9 +35,9 @@ export default function Buscador({filtro, setFiltro}){
                   d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
               </svg>
             </button>
-          </span>
+          </span> */}
         </div>
-            
+      
 
   
         )

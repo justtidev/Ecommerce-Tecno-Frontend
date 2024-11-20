@@ -10,7 +10,8 @@ import axios from 'axios';
 import Navbar from './Navbar.jsx';
 import Footer from './Footer.jsx';
 import { CarritoContext } from '../context/CarritoContext';
-import Carrito from './Carrito';
+import Carrito from './CarritoCompras.jsx';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const product = {
@@ -56,8 +57,9 @@ export default function DetalleProducto() {
   if (loading) return <p className="text-center text-2xl">Cargando...</p>;
   if (error) return <p className="text-center text-2xl text-red-600">{error}</p>;
 
-  const handleAgregarAlCarrito = () => {
+  const handleAgregarAlCarrito = (producto ) => {
   agregarAlCarrito(producto)
+
 
   }
 
@@ -67,7 +69,7 @@ export default function DetalleProducto() {
 
       <Navbar/>
 
-      <div className="bg-white">
+      <div className="bg-slate-100">
 
 
         <div key={producto.id} className="pt-6">
@@ -101,15 +103,15 @@ export default function DetalleProducto() {
             </div>
           </div>
 
-          {/* Product info */}
-          <div className=" bg-slate-100  mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
-            <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+          {/* Product info NOMBRE*/}
+          <div className=" mx-auto bg-slate-100  max-w-2xl px-4  pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 pb-8 lg:pt-16">
+            <div className=" lg:col-span-2 lg:border-r shadow:md lg:border-blue-300 lg:pr-8">
               <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{producto.nombre}</h1>
             </div>
 
-            {/* Options */}
-            <div className="mt-4 justify-items-center lg:row-span-2 lg:mt-4">
-              <h3 className="sr-only ">Informacion del Producto</h3>
+            {/* Options Derecha. Precio, color, boton comprar y Volver */}
+            <div className="mt-4 justify-items-center text-sm font-medium text-gray-900 lg:row-span-2 lg:mt-4">
+              <h3 className="">Precio </h3>
               <p className="text-3xl   tracking-tight text-gray-900">$ {producto.precioUnitario}</p>
 
 
@@ -119,7 +121,7 @@ export default function DetalleProducto() {
                 <div className='place-items-center'>
                   <h3 className="mt-8  text-sm font-medium text-gray-900">Color</h3>
 
-                  <fieldset aria-label="Choose a color" className="mt-4 ">
+                  <fieldset aria-label="blue" className="mt-4  ">
                     <RadioGroup value={selectedColor} onChange={setSelectedColor} className="flex items-start space-x-3">
                       {product.colors.map((color) => (
                         <Radio
@@ -150,30 +152,32 @@ export default function DetalleProducto() {
 
                   <button
                     type="submit"
-                    className="mt-10 mb-4 flex w-full items-center justify-center  border border-transparent bg-green-600 hover:bg-green-400 my-2 text-md text-gray-900 rounded-lg p-2 focus:ring-offset-2"
-                 onClick={handleAgregarAlCarrito} >
+                    className="btn p-2 mt-10  w-full items-center justify-center text-lg rounded-lg focus:ring-offset-2"
+                 onClick={() => handleAgregarAlCarrito(producto,)}   >
                     Agregar al carrito
-                  </button>
+                  </button>;
+                  <ToastContainer/>
                   <div className='mt-10 mx-4 p-4  '>
 
-<Link className='text-black  hover:font-bold  underline' to="http://localhost:5173" >Volver al Home</Link>
-</div>
 
+<Link className='text-blue-500 text-lg hover:font-bold  underline' to="http://localhost:5173" >Volver  </Link>
+</div>
+{/* Lado izquierdo, Nombre, descripcion, detalle y categoria */}
                 </fieldset>
               </div>
             </div>
-            <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
-              {/* Description and details */}
-              <div>
-                <h3 className="sr-only">Descripcion</h3>
+            <div className="grid pb-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-blue-300  ">
+              {/* Description and detsails */}
+              <div className="mt-10" >
+                <h3 className="text-lg font-bold text-gray-900">Descripcion</h3>
 
-                <div className="space-y-6">
-                  <p className="text-base text-gray-900">{producto.descripcionBreve}</p>
+                <div className="mt-4 text-gray-600">
+                  <p className="">{producto.descripcionBreve}</p>
                 </div>
               </div>
 
               <div className="mt-10">
-                <h3 className="text-sm font-medium text-gray-900">Descripcion</h3>
+                <h3 className="text-lg font-bold text-gray-900">Detalle</h3>
 
                 <div className="mt-4 text-gray-600">
                   <p>{producto.descripcionDetallada}</p>
@@ -181,11 +185,11 @@ export default function DetalleProducto() {
               </div>
 
               <div className="mt-10">
-                <h2 className="text-sm font-medium text-gray-900">Categoria</h2>
+                <h2 className="text-lg font-bold text-gray-900">Categoria</h2>
 
 
                 <div className="mt-4 space-y-6">
-                  <p className="text-sm text-gray-600">{producto.CategoriumId}</p>
+                  <p className="">{producto.Categorium.nombre}</p>
 
                 </div>
 

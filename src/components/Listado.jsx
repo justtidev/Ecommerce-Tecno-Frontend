@@ -2,12 +2,15 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {Link} from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
-import { CarritoContext } from './context/CarritoContext';
+import Carrito from './CarritoCompras'
 
-function Listado({productos}) {
+import { CarritoContext } from '../context/CarritoContext';
+function Listado({productos, rangoPrecio, setCupon, setDescuento, descuento, cupon}) {
   const { agregarAlCarrito } = useContext(CarritoContext);
   const navigate = useNavigate();
+  
  
+
  
   const handleVerDetalles = (id) => {
     navigate(`/detalleProducto/${id}`);
@@ -17,9 +20,14 @@ function Listado({productos}) {
 
 const handleAgregarAlCarrito = (producto) => {
   agregarAlCarrito(producto)
- 
+  console.log('producto', producto)
+  alert("Producto agregado")
+ }
 
-  }
+ const handlePrecioUnitario =(precioUnitario) =>{
+  const precioCupon =  precioUnitario -(precioUnitario *(descuento/100))
+  return precioCupon
+ }
 
 /*  useEffect(() => {
     handleAgregarAlCarrito();
@@ -37,7 +45,7 @@ const handleAgregarAlCarrito = (producto) => {
             <div id="Productos" className="mt-2 grid grid-cols-3  gap-x-6 gap-y-6 sm:grid-cols-1 sm:gap-x-4 lg:grid-cols-2  xl:gap-x-8">
 
               {productos.map((producto, index) =>
-
+                  
                 <div key={producto.id} className=" sm:w-4/6 md:w-full ml-2 p-2 mx-auto  overflow-hidden rounded-2xl bg-white border-2 border-gray-400 shadow-slate-600 shadow-xl ">
                  <div className="">
                     <img src={(producto.Imagens[0].ubicacion)}
@@ -45,17 +53,17 @@ const handleAgregarAlCarrito = (producto) => {
 
                   </div> 
                   {/* <div className=" flex flex-col-1 "> */}
-                    <div className='grid' >
-                      <h3 className="text-sm text-gray-700 min-h-10">
+                    <div className='grid place-items-center gap-2' >
+                      <h3 className="mt-2 text-l text-gray-700 font-extrabold ">
 
 
                         {producto.nombre}
 
                       </h3>
-                      <p className="mt-1 text-sm text-gray-500 min-h-20 justify-center ">{producto.descripcionBreve}</p>
-                      <p className="text-md font-semibold text-gray-900">${producto.precioUnitario}</p>
+                      <p className=" grid content-center text-justify p-2 mx-6 text-sm text-gray-500 min-h-16  ">{producto.descripcionBreve}</p>
+                      <p className="text-md font-semibold text-gray-800">${descuento>0 ? handlePrecioUnitario(producto.precioUnitario) : producto.precioUnitario} </p>
 
-                      <button onClick={() => handleAgregarAlCarrito(producto.id)}  className="bg-green-600 hover:bg-green-400 my-2 text-md text-gray-900 rounded-lg p-2 ">Agregar al carrito</button>
+                      <button onClick={() => handleAgregarAlCarrito(producto)}  className=" btn rounded-lg p-2 ">Agregar al carrito</button>
                       <button type='submit' onClick={() => handleVerDetalles(producto.id)} className='underline' >Mas detalles</button>
                   
 
@@ -67,15 +75,15 @@ const handleAgregarAlCarrito = (producto) => {
               )}
             </div>
           </div>
-        
+     {console.log('productos',productos)  } 
       
-      {productos.length === 0 && (
+      {productos.length === 0  && (
         <div className="w-full text-center mt-6 text-gray-600">
           No se encontraron productos que coincidan con la búsqueda.
         </div>
       )}
       
-      
+     
     </>
   );
 }

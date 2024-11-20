@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom"
 import axios from 'axios';
+import LayoutAdmin from '../LayoutAdmin';
 
 function ProductoIndex() {
 
@@ -91,8 +92,8 @@ function ProductoIndex() {
   return (
 
     <>
-
-      <div className='p-6 text-2xl font-bold text-center text-white bg-black'>
+<LayoutAdmin/>
+      <div className='p-6 text-2xl font-bold text-center text-white bg-gray-800'>
         Gestion de Productos
       </div>
       {console.log(loading)}
@@ -114,6 +115,8 @@ function ProductoIndex() {
             Crear Producto
           </button>
         </div>
+       
+       
       </div>
       <div className='m-5'>
         <table className='w-full border-collapse border-gray-400 table-auto shadow-lg'>
@@ -147,6 +150,7 @@ function ProductoIndex() {
                 <td className='border border-gray-200 text-center'>{producto.costoProducto}</td>
                 <td className='border border-gray-200 text-center'>{producto.CategoriumId}</td>
                 <td className='border border-gray-200 text-center'>{producto.disponible ? 'Sí' : 'No'}</td>
+                
 
                 <td className='flex m-2 gap-3 px-4'>
                   <button

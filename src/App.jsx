@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-/* import { AuthProvider, AuthContext } from './context/AuthContext'; */
+import { CarritoProvider, CarritoContext } from './context/CarritoContext.jsx'; 
 import Login from './components/Login';
 import Register from './components/Register';
 import ProtectedPage from './components/ProtectedPage';
-
+import 'react-toastify/dist/ReactToastify.css';
 
 
 import Home from './Home.jsx';
@@ -19,15 +19,16 @@ import FormularioProducto from './admin/producto/formulario.jsx';
 import UsuarioIndex from './admin/usuario/index.jsx';
 import FormularioUsuario from './admin/usuario/formulario.jsx';
 import DetalleProducto from './components/DetalleProducto.jsx';
-
-function ProtectedRoute({ children }) {
+import CuponesIndex from './admin/cupones.jsx/index.jsx';
+import FormularioCupones from './admin/cupones.jsx/formulario.jsx';
+/* function ProtectedRoute({ children }) {
   const { token } = React.useContext(AuthContext);
   return token ? children : <Navigate to="/login" />;
-}
+} */
 
 function App() {
   return (
-
+<CarritoProvider>
     < Router>
       <Routes>
 
@@ -37,7 +38,7 @@ function App() {
         <Route path="detalleProducto/:id"
           element={<DetalleProducto />} />
       
-        
+  
 
 
         {/*  Administrador */}
@@ -46,6 +47,12 @@ function App() {
 
         <Route path="admin/dashboard"
           element={<Dashboard />} />
+
+<Route path="admin/cupones"
+          element={<CuponesIndex />} />
+
+<Route path="admin/cupones/:id"
+          element={<FormularioCupones />} />
 
         <Route path="admin/producto"
           element={<ProductoIndex />} />
@@ -83,6 +90,8 @@ function App() {
 
       </Routes>
     </Router>
+    
+    </CarritoProvider>
 
 
   );

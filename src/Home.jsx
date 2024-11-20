@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Pagination } from "flowbite-react";
 import { Banner } from './components/Banner.jsx';
-import Listado from './Listado.jsx';
+import Listado from './components/Listado.jsx';
 import Navbar from './components/Navbar.jsx';
 import Buscador from './components/Buscador.jsx';
+import Cupones from './components/Cupones.jsx';
 
 import Filter2 from './components/Filter2.jsx';
 import WhatsAppButton from './components/WhatsAppButton.jsx';
@@ -24,15 +25,43 @@ function Home() {
   const [categorias, setCategorias] = useState([]);
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(0);
   
-  const [rangoPrecio, setRangoPrecio] = useState({ min: '', max: '' });
+  const [minPrecio, setMinPrecio] = useState(0);
+  const [maxPrecio, setMaxPrecio] = useState(0);
+  const [cupon, setCupon] =useState('')
+  const [descuento, setDescuento] = useState("0")
 
+  const obtenerCupones =  () => {
+    axios.get("/cupones/").then((respuesta)=> {
+     console.log('Cupones' + respuesta)
+     if (respuesta.status === 200) {
+       console.log("respuesta", respuesta.data.data)
+   /*    setCupon(respuesta)
+      setDescuento(cupon.descuento)
+     console.log('Cupon',cupon) */
+    
+     } else {
+       console.log("error")
+     }
 
+   }).catch((error) => {
+    setCupon([]) 
+    
+    console.log("error", error)
+   });
+
+   
+  useEffect(() => {
+    obtenerCupones();
+  
+    
+  }, [])
+}
 
 
   const buscarItems = () => {
 
-    axios.get(`/producto/lista?pagina=${pagina}&cantidad=4&filtro=${filtro}&categoria=${categoriaSeleccionada}&rangoPrecio=${rangoPrecio.min},${rangoPrecio.max}`).then((respuesta) => {
-      console.log("***", respuesta)
+    axios.get(`/producto/lista?pagina=${pagina}&cantidad=4&filtro=${filtro}&categoria=${categoriaSeleccionada}&minPrecio=${minPrecio}&maxPrecio=${maxPrecio}`).then((respuesta) => {
+     
       //
       setLoading(false);
       if (respuesta.status === 200) {
@@ -55,16 +84,16 @@ function Home() {
 
     buscarItems()
 
-  }, [pagina, categoriaSeleccionada, filtro, rangoPrecio])
-  console.log('Precio', rangoPrecio)
+  }, [pagina, categoriaSeleccionada, filtro, minPrecio, maxPrecio, ])
+  
 
   useEffect(() => {
 
-    console.log("cambio rangoPrecio", rangoPrecio);
+   
 
     buscarItems()
 
-  }, [verDisponibles])
+  }, [verDisponibles, ])
 
 
   useEffect(() => {
@@ -82,26 +111,31 @@ function Home() {
 
   return (
     <>
-      <div className=' max-w-8xl font-bold text-center bg-yellow-400 '>
+    <div className=''>
+      <div className='max-w-8xl  text-center'>
         <Navbar />
       </div>
-
+<div>
       <Banner />
+      </div>
+      
 
       <div className="grid grid-cols-12 p-5 ">
 
 
-        <div className='col-span-4 md:col-span-2 '>
-          <div className="">
+        <div className=' col-span-4 grid grid-cols-1 justify-items-center  place-content-start  gap-4 m-4 md:col-span-3 '>
+          <div className=" w-full">
             <Buscador filtro={filtro} setFiltro={setFiltro} />
           </div>
           <div>
-            <Filter2 setCategoriaSeleccionada={setCategoriaSeleccionada}
-              setRangoPrecio={setRangoPrecio} />
+            <Filter2 className="bg-red-100" setCategoriaSeleccionada={setCategoriaSeleccionada} categoriaSeleccionada={categoriaSeleccionada}
+             minPrecio={minPrecio} maxPrecio= {maxPrecio} setMinPrecio={setMinPrecio} setMaxPrecio={setMaxPrecio} setFiltro= {setFiltro}/>
           </div>
+          <div> <Cupones setCupon={setCupon} cupon={cupon} /></div>
+          
 
         </div>
-        <div className="bg-white col-span-8 mx-auto backdrop:md:col-span-10 mt-2">
+        <div className="bg-white col-span-8 mx-auto backdrop:md:col-span-10 ">
           <div className='max-w-6xl pt-5 mx-auto'>
 
 
@@ -111,15 +145,15 @@ function Home() {
               <div>Cargando...</div>
 
               :
-              <div> <Listado productos={data} filtro={filtro} categoria={categoriaSeleccionada} rangoPrecio={rangoPrecio} /> </div>
+              <div> <Listado productos={data} filtro={filtro} categoria={categoriaSeleccionada}  setMinPrecio={setMinPrecio} setMaxPrecio={setMaxPrecio} cupon={cupon} setDescuento={setDescuento} descuento={descuento}/> </div>
             }
           </div>
           <div className='flex justify-center w-full'>
-
-          {data && data.length > 0 &&  
-            <div className="flex my-10 overflow-x-auto sm:justify-center">
+            {cantidadItems > 4 
+          && data && data.length > 0 &&  
+            <div className="flex mr-10 ml-0 my-4 overflow-x-auto sm:justify-center">
              
-              <Pagination currentPage={pagina} totalPages={parseInt(cantidadItems / 4)} onPageChange={onPageChange} />
+              <Pagination currentPage={pagina} totalPages={parseInt(cantidadItems / 4)} onPageChange={onPageChange} previousLabel='Anterior' nextLabel='Siguiente'/>
             </div>
           }
 
@@ -132,7 +166,7 @@ function Home() {
       <div className='w-full'>
         <Footer id='Contacto' />
       </div>
-
+      </div>
     </>
   )
 }

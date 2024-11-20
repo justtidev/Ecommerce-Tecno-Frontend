@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom"
 import axios from 'axios';
-import LayoutAdmin from '../LayoutAdmin';
-function CategoriaIndex() {
+
+function CuponesIndex() {
 
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
@@ -17,12 +17,12 @@ function CategoriaIndex() {
         // se ejecuta al cargar el componente
         setLoading(true);
 
-        cargarCategorias();
+        cargarCuponess();
 
     }, [])
 
-    const cargarCategorias = () => {
-        axios.get('/categoria/').then((respuesta) => {
+    const cargarCuponess = () => {
+        axios.get('/cupones/').then((respuesta) => {
             console.log("***", respuesta)
 
             setLoading(false);
@@ -41,9 +41,9 @@ function CategoriaIndex() {
 
 
     const borrarElementoDB = (id) => {
-        axios.delete('/categoria/' + id).then((respuesta) => {
+        axios.delete('/cupones/' + id).then((respuesta) => {
             console.log("***", respuesta)
-            cargarCategorias();
+            cargarCuponess();
         }).catch((error) => {
             console.log("error", error)
         });
@@ -78,20 +78,18 @@ function CategoriaIndex() {
     return (
 
         <div>
-            <LayoutAdmin/>
             <div className="p-6 text-2xl font-bold text-center text-white bg-green-900">
-                Gestion de Categorias
+                Gestion de Cuponess
             </div>
 
-            {loading? 'Cargando..': ''}
-            <div className="flex justify-center w-full mt-10"> 
+            {loading && <div className="flex justify-center w-full mt-10">Cargando ...</div>}
 
 
             <div className='w-1/4'>
                 <input
                     type='text'
                     className='w-full m-3 p-2 mb-4 border border-gray-400 rounded'
-                    placeholder='Buscar por nombre'
+                    placeholder='Buscar por codigo'
                     value={filtro}
                     onChange={(e) => setFiltro(e.target.value)}
                 /></div>
@@ -100,17 +98,17 @@ function CategoriaIndex() {
 
             <div className="ml-5">
                 <button className="px-4 m-3 py-2 font-bold text-white bg-green-600 rounded hover:bg-green-800"
-                    onClick={() => navigate("/admin/categoria/nuevo")}>Crear Categoria
+                    onClick={() => navigate("/admin/cupones/nuevo")}>Crear Cupones
                 </button>
             </div>
-           
-</div>
+
             <div className="m-5">
                 <table className='w-full border border-collapse  table-auto shadow-lg  '>
                     <thead className='text-gray-300 bg-black'>
                         <tr >
                             <th className="px-4 py-2 border-2 border-gray-400 text-center">ID</th>
-                            <th className="px-4 py-2 border-2 border-gray-400 text-center">Nombre</th>
+                            <th className="px-4 py-2 border-2 border-gray-400 text-center">Codigo</th>
+                            <th className="px-4 py-2 border-2 border-gray-400 text-center">Descuento</th>
                             <th className="px-4 py-2 border-2 border-gray-400 text-center">Acciones</th>
 
 
@@ -118,21 +116,22 @@ function CategoriaIndex() {
 
                     </thead>
                     <tbody className=''>
-                        {filtrarElementosSegunPagina().filter((categoria) =>
-                            categoria.nombre.toLowerCase().includes(filtro.toLowerCase())).map((categoria) =>(
-                                <tr key={categoria.id}>
-                                    <td className=" px-4 py-2 border border-gray-200 text-center hover:bg-gray-100">{categoria.id}</td>
-                                    <td className=" px-4 py-2 border border-gray-200 text-center hover:bg-gray-100">{categoria.nombre}</td>
+                        {filtrarElementosSegunPagina().filter((cupones) =>
+                            cupones.codigo.toLowerCase().includes(filtro.toLowerCase())).map((cupones) =>
+                                <tr key={cupones.id}>
+                                    <td className=" px-4 py-2 border border-gray-200 text-center hover:bg-gray-100">{cupones.id}</td>
+                                    <td className=" px-4 py-2 border border-gray-200 text-center hover:bg-gray-100">{cupones.codigo}</td>
+                                    <td className=" px-4 py-2 border border-gray-200 text-center hover:bg-gray-100">{cupones.descuento}</td>
 
                                     <td className="flex justify-center space-x-2 bg-white border-b p-2 ">
-                                        
-                                            <button className='p-1 text-white bg-green-600 rounded-md hover:bg-slate-800' onClick={() => navigate("/admin/categoria/" + categoria.id)}>EDITAR</button> 
-                                     
-                                            <button className='p-1 text-white bg-red-500 rounded-md hover:bg-red-800' onClick={() => borrarElemento(categoria.id)}>
-                                                BORRAR</button> </td>
+                                        <div>
+                                            <button className='p-1 text-white bg-green-600 rounded-md hover:bg-slate-800' onClick={() => navigate("/admin/cupones/" + cupones.id)}>EDITAR</button> </div>
+                                        <div>
+                                            <button className='p-1 text-white bg-red-500 rounded-md hover:bg-red-800' onClick={() => borrarElemento(cupones.id)}>
+                                                BORRAR</button> </div></td>
 
                                 </tr>
-                           ) )}
+                            )}
                     </tbody>
 
                 </table>
@@ -141,12 +140,12 @@ function CategoriaIndex() {
 
             <div>
                 <div className='flex justify-center mt-5'>
-                    {filtrarElementosSegunPagina().filter((categoria) =>
-                        categoria.nombre.toLowerCase().includes(filtro.toLowerCase())
+                    {filtrarElementosSegunPagina().filter((cupones) =>
+                        cupones.codigo.toLowerCase().includes(filtro.toLowerCase())
                     ).length === 0 ? (
                         <tr>
                             <td colSpan={5} className='px-4 py-2 text-center border border-gray-400'>
-                                No se encontraron categorias que coincidan con su búsqueda.
+                                No se encontraron cuponess que coincidan con su búsqueda.
                             </td>
                         </tr>
                     ) :
@@ -169,4 +168,4 @@ function CategoriaIndex() {
     )
 }
 
-export default CategoriaIndex;
+export default CuponesIndex;

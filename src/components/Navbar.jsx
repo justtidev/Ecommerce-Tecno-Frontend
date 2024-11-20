@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import {Link} from "react-router-dom"
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon, ShoppingCartIcon, UserIcon } from '@heroicons/react/24/outline'
 import { AddCard, Countertops } from '@mui/icons-material'
-import Carrito from './Carrito.jsx'
+import Carrito from './CarritoCompras.jsx'
+
 
 
 
@@ -12,15 +14,15 @@ const user = {
 }
 
 const navigation = [
-  { name: 'Productos', href: '#Productos', current: true },
+  { name: 'Producto', href: '#Productos', current: true },
  
   { name: 'Contacto', href: '#Contacto', current: false },
   { name: 'Ayuda', href: '#', current: false },
 ]
 const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
+  { name: 'Login', href: '/login' },
+  { name: 'Register', href:'/register' },
+  { name: 'Mi perfil', href: '#' },
 ]
 
 function classNames(...classes) {
@@ -38,11 +40,9 @@ export default function Navbar() {
             <div className="flex h-20 items-center justify-between">
               <div className="flex items-center">
                 <div className="flex">
-                  <img
-                    alt="Techno"
-                    src="src\assets\encendidoAzul.com.png"
-                    className="h-10 w-10"
-                  />
+                 <Link to="http://localhost:5173" >  <img
+                     src='/TechnoLogo.png'  className='bg-white h-14 w-14 ' />   </Link>          
+                  
                 </div>
                 
                 <div className="hidden md:block">
@@ -53,8 +53,8 @@ export default function Navbar() {
                         href={item.href}
                         aria-current={item.current ? 'page' : undefined}
                         className={classNames(
-                          item.current ? ' text-gray-700 hover:underline hover:text-gray-900 ' : 'text-gray-700 hover:text-underline hover:text-gray-900 hover:underline',
-                          'px-3 py-2 text-xl font-large',
+                          item.current ? ' text-gray-600 hover:underline hover:text-gray-800 ' : 'text-gray-600 hover:text-underline hover:text-gray-800 hover:underline',
+                          'px-3 py-2 text-l ',
                         )}
                       >
                         {item.name}
@@ -73,7 +73,7 @@ export default function Navbar() {
                     <div>
                     <MenuButton
                     type="button"
-                     className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" 
+                     className="relative rounded-full bg-white border-2 border-blue-500 p-1 text-blue-500 hover:bg-blue-100    " 
                   >
                     <span className="absolute -inset-1.5" />
                     <span className="sr-only">Usuario</span>
@@ -105,7 +105,8 @@ export default function Navbar() {
                 
                   <button
                     type="button"
-                     className=" container-cart-icon  rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" 
+                     className=" container-cart-icon  rounded-full border-2 border-blue-500 p-1 text-blue-500 hover:bg-blue-100
+                       " 
                   onClick={() => setActive(!active)}>
                     <span className="absolute -inset-1.5" />
                     <span className="sr-only">Carrito</span>
@@ -113,8 +114,8 @@ export default function Navbar() {
                     
                   </button>
                   <div
-					className={`container-cart-products ${
-						active ? '' : 'hidden-cart'
+					className={` container-cart-products 
+            ${active ? '' : 'hidden-cart'
 					}`}>
           {<Carrito/>}
 				
@@ -127,7 +128,7 @@ export default function Navbar() {
               
               <div className="-mr-2 flex md:hidden">
                 {/* Mobile menu button */}
-                <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md text-blue-500 p-2  hover:bg-blue-100 border-2 border-blue-500">
                   <span className="absolute -inset-0.5" />
                   <span className="sr-only">Open main menu</span>
                   <Bars3Icon aria-hidden="true" className="block h-6 w-6 group-data-[open]:hidden" />
@@ -146,7 +147,7 @@ export default function Navbar() {
                   href={item.href}
                   aria-current={item.current ? 'page' : undefined}
                   className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                    item.current ? ' text-blue-500 hover:border border-blue-500 hover:bg-blue-100' : 'text-blue-500 hover:border border-blue-500 hover:bg-blue-100',
                     'block rounded-md px-3 py-2 text-base font-medium',
                   )}
                 >
@@ -157,7 +158,8 @@ export default function Navbar() {
         <div>
                 <button
                   type="button"
-                  className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  className="md: hidden relative  text-blue-500 hover:border border-blue-500 hover:bg-blue-100' :  hover:bg-blue-100
+                    rounded-md px-3 py-2 text-base font-mediuml "
                 >
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">View notifications</span>
@@ -170,7 +172,8 @@ export default function Navbar() {
                     key={item.name}
                     as="a"
                     href={item.href}
-                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                    className=" text-blue-500 hover:bg-blue-100' : 'text-blue-500 hover:border border-blue-500 hover:bg-blue-100
+                    block rounded-md px-3 py-2 text-base font-medium"
                   >
                     {item.name}
                   </DisclosureButton>
